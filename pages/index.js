@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { ROOT_API_PATH, GAMES_API_PATH, API_KEY } from "./constants/paths"
 
 export const getStaticProps = async() => {
@@ -19,10 +20,20 @@ export const getStaticProps = async() => {
 
 const HomePage = ({ gamesList }) => {
   const { results } = gamesList
-  results.forEach(el => console.log(el.name))
 
   return (
-    <p>Home page</p>
+    <>
+      <p>Home page</p>
+      <ul>
+        {results.map(({ id, slug, name }) => (
+          <li key={id}>
+            <Link href={`/game/${slug}`}>
+              {name}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </>
   )
 }
 
