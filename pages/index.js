@@ -1,8 +1,9 @@
-import Link from "next/link"
+import { GamesList } from "./components/gamesList"
+import { Header } from "./components/header"
 import { ROOT_API_PATH, GAMES_API_PATH, API_KEY } from "./constants/paths"
 
 export const getStaticProps = async() => {
-  const response = await fetch(`${ROOT_API_PATH}${GAMES_API_PATH}?${API_KEY}&page=3`)
+  const response = await fetch(`${ROOT_API_PATH}${GAMES_API_PATH}?${API_KEY}`)
   const data = await response.json()
 
   if (!data) {
@@ -23,16 +24,8 @@ const HomePage = ({ gamesList }) => {
 
   return (
     <>
-      <p>Home page</p>
-      <ul>
-        {results.map(({ id, slug, name }) => (
-          <li key={id}>
-            <Link href={`/game/${slug}`}>
-              {name}
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <Header title="Games List"></Header>
+      <GamesList games={results} />
     </>
   )
 }

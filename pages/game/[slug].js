@@ -18,7 +18,7 @@ export const getServerSideProps = async(context) => {
   }
 }
 
-const Game = ({ game }) => {
+const GamePage = ({ game }) => {
   const { name } = game
 
   return (
@@ -26,4 +26,4 @@ const Game = ({ game }) => {
   )
 }
 
-export default Game
+export default GamePage
