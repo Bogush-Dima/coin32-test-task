@@ -6,7 +6,7 @@ export const GameInfo = ({ websiteLink, description, screenshots }) => {
   return (
     <>
       <a href={websiteLink} target="blank">
-        <StyledButton>Visit website</StyledButton>
+        <StyledButton className="visitWebsite">Visit website</StyledButton>
       </a>
       <DescriptionStyled dangerouslySetInnerHTML={{ __html: description }} />
       <Slider screenshots={screenshots} />

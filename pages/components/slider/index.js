@@ -1,7 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useState } from "react";
 import { Button } from "../button";
 import { 
   AllItemsContainerStyled, 
+  ButtonsWrapperStyled, 
   MainWrapperStyled, 
   ScreenshotStyled, 
   WindowStyled 
@@ -9,23 +11,33 @@ import {
 
 export const Slider = ({ screenshots }) => {
   const screenshotRef = useRef(null)
+  const [count, setCount] = useState(0)
   const [offset, setOffset] = useState(0)
 
+  const changeOffset = () => setOffset(screenshotRef.current.width * count)
+
   useEffect(() => {
-    if (screenshotRef) {
-      screenshotRef.current.maxOffsetValue = (screenshots.length - 1) * screenshotRef.current.width
-    }
-  }, [screenshotRef, screenshots.length])
+    window.addEventListener("resize", changeOffset)
+    return () => window.removeEventListener("resize", changeOffset)
+  }, [screenshotRef.current?.width])
+
+  useEffect(() => {
+    changeOffset()
+  }, [count])
 
   const handleNext = () => {
-    if (offset < screenshotRef.current.maxOffsetValue) {
-      setOffset((prev) => prev + screenshotRef.current.width)
-    }
+      if (count === screenshots.length - 1) {
+        setCount(0)
+      } else {
+        setCount((prev) => prev + 1)
+      }
   }
 
   const handlePrevious = () => {
-    if (offset) {
-      setOffset((prev) => prev - screenshotRef.current.width)
+    if (!count) {
+      setCount(screenshots.length - 1)
+    } else {
+      setCount((prev) => prev - 1)
     }
   }
 
@@ -38,8 +50,10 @@ export const Slider = ({ screenshots }) => {
           ))}
         </AllItemsContainerStyled>
       </WindowStyled>
-      <Button onClick={handlePrevious} text="Previous" disabled={!offset} />
-      <Button onClick={handleNext} text="Next" disabled={offset === screenshotRef.current?.maxOffsetValue} />
+      <ButtonsWrapperStyled>
+        <Button onClick={handlePrevious} text="Previous" />
+        <Button onClick={handleNext} text="Next" />
+      </ButtonsWrapperStyled>
     </MainWrapperStyled>
   )
 }

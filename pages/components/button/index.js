@@ -1,7 +1,7 @@
 import { StyledButton } from "./styled"
 
-export const Button = ({ text, onClick, disabled }) => (
-  <StyledButton onClick={onClick} disabled={disabled}>
+export const Button = ({ text, onClick }) => (
+  <StyledButton onClick={onClick}>
     {text}
   </StyledButton>
 )

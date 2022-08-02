@@ -1,11 +1,12 @@
 import styled from "styled-components";
 
 export const MainWrapperStyled = styled.div`
-  width: 80%;
+  width: 70%;
+  margin: 0 auto;
 `
 
 export const WindowStyled = styled.div`
-  width: 80%;
+  margin: 0 auto;
   overflow: hidden;
 `
 
@@ -19,4 +20,10 @@ export const AllItemsContainerStyled = styled.div`
 export const ScreenshotStyled = styled.img`
   max-width: 100%;
   min-width: 100%;
+`
+
+export const ButtonsWrapperStyled = styled.div`
+  margin: 30px;
+  display: flex;
+  justify-content: space-between;
 `
