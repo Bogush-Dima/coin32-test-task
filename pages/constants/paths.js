@@ -1,4 +1,6 @@
 export const ROOT_API_PATH = "https://api.rawg.io/api"
 export const GAMES_API_PATH = "/games"
+export const PLATFORMS_API_PATH = "/platforms"
 export const GAME_SCREENSHOTS_API_PATH = "/screenshots"
 export const API_KEY = "key=c542e67aec3a4340908f9de9e86038af"
+export const ARROW_IMG_PATH = "https://upload.wikimedia.org/wikipedia/commons/f/f9/Antu_arrow-right.svg"

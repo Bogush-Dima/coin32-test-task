@@ -6,6 +6,7 @@ import {
   GAME_SCREENSHOTS_API_PATH, 
   API_KEY 
 } from "../constants/paths"
+import { getRelevantScreenshotsData } from "../helpers/api"
 
 export const getServerSideProps = async(context) => {
   const { slug } = context.params
@@ -23,7 +24,7 @@ export const getServerSideProps = async(context) => {
   return {
     props: {
       game: info,
-      screenshots: screenshots.results
+      screenshots: getRelevantScreenshotsData(screenshots.results)
     }
   }
 }

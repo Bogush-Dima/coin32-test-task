@@ -1,12 +1,23 @@
+import { useEffect, useState } from "react"
 import { GamesList } from "./components/gamesList"
 import { Header } from "./components/header"
-import { ROOT_API_PATH, GAMES_API_PATH, API_KEY } from "./constants/paths"
+import { Select } from "./components/select"
+import { getRelevantGamesData, getRelevantPlatformsData } from "./helpers/api"
+import { 
+  ROOT_API_PATH, 
+  GAMES_API_PATH, 
+  PLATFORMS_API_PATH, 
+  API_KEY 
+} from "./constants/paths"
 
 export const getStaticProps = async() => {
-  const response = await fetch(`${ROOT_API_PATH}${GAMES_API_PATH}?${API_KEY}`)
-  const data = await response.json()
+  const gamesResponse = await fetch(`${ROOT_API_PATH}${GAMES_API_PATH}?${API_KEY}`)
+  const gamesData = await gamesResponse.json()
 
-  if (!data) {
+  const platformsResponse = await fetch(`${ROOT_API_PATH}${PLATFORMS_API_PATH}?${API_KEY}`)
+  const platformsData = await platformsResponse.json()
+
+  if (!gamesData) {
     return {
       notFound: true
     }
@@ -14,18 +25,37 @@ export const getStaticProps = async() => {
 
   return {
     props: {
-      gamesList: data
+      gamesList: getRelevantGamesData(gamesData.results),
+      platformsList: getRelevantPlatformsData(platformsData.results)
     }
   }
 }
 
-const HomePage = ({ gamesList }) => {
-  const { results } = gamesList
+const HomePage = ({ gamesList, platformsList }) => {
+  const [currentGamesList, setCurrentGamesList] = useState(gamesList)
+  const [selectedPlatform, setSelectedPlatform] = useState(null)
+
+  useEffect(() => {
+    if (selectedPlatform) {
+      (async () => {
+        const gamesResponse = await fetch(`${ROOT_API_PATH}${GAMES_API_PATH}?${API_KEY}&platforms=${selectedPlatform.id}`)
+        const gamesData = await gamesResponse.json()
+        setCurrentGamesList(getRelevantGamesData(gamesData.results))
+      })()
+    }
+  }, [selectedPlatform])
 
   return (
     <>
-      <Header title="Games List"></Header>
-      <GamesList games={results} />
+      <Header title="Games List">
+        <Select 
+          listItems={platformsList} 
+          buttonTitle="Platform:"
+          selectedPlatform={selectedPlatform} 
+          setSelectedPlatform={setSelectedPlatform} 
+        />
+      </Header>
+      <GamesList games={currentGamesList} />
     </>
   )
 }
