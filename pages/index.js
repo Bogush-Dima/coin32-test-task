@@ -41,6 +41,13 @@ const HomePage = ({ gamesList, platformsList }) => {
   const [isUpDateOrder, setIsUpDateOrder] = useState(false)
   const [isUpRatingOrder, setIsUpRatingOrder] = useState(false)
   const [searchValue, setSearchValue] = useState("")
+  const [gamesRequestPage, setGamesRequestPage] = useState(2)
+  const [isFetching, setIsFetching] = useState(false)
+
+  useEffect(() => {
+    document.addEventListener("scroll", scrollHandler)
+    return () => document.removeEventListener("scroll", scrollHandler)
+  }, [])
 
   useEffect(() => {
     if (selectedPlatform) {
@@ -59,6 +66,18 @@ const HomePage = ({ gamesList, platformsList }) => {
       setCurrentGamesList(getRelevantGamesData(searchGamesData.results))
     })()
   }, [searchValue])
+
+  useEffect(() => {
+    if (isFetching) {
+      (async () => {
+        const searchGamesResponse = await fetch(`${ROOT_API_PATH}${GAMES_API_PATH}?${API_KEY}&page=${gamesRequestPage}`)
+        const searchGamesData = await searchGamesResponse.json()
+        setCurrentGamesList((prev) => [...prev, ...getRelevantGamesData(searchGamesData.results)])
+        setGamesRequestPage((prev) => prev + 1)
+        setIsFetching(false)
+      })()
+    }
+  }, [isFetching])
 
   useEffect(() => {
     const sortedGamesList = currentGamesList.sort((a, b) => {
@@ -82,6 +101,13 @@ const HomePage = ({ gamesList, platformsList }) => {
     })
     setCurrentGamesList(sortedGamesList)
   }, [isUpDateOrder])
+
+  const scrollHandler = (e) => {
+    const isScrolledToBottom = e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 100
+    if (isScrolledToBottom) {
+      setIsFetching(true)
+    }
+  }
 
   return (
     <>
