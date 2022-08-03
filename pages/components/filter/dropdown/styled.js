@@ -19,6 +19,7 @@ export const ListItemStyled = styled.li`
   color: black;
   cursor: pointer;
   padding: 10px;
+  background: ${({ isSelected }) => isSelected && "rgba(0,0,0,.1)"};
 
   &:hover {
     background: rgba(0,0,0,.1);

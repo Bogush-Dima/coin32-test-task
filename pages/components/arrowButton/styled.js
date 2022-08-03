@@ -24,6 +24,6 @@ export const TextStyled = styled.span`
 
 export const ArrowStyled = styled.img`
   width: 20px;
-  transform: rotate(90deg);
+  transform: rotate(${({ isToggled }) => isToggled ? "270deg" : "90deg"});
   margin-left: 10px;
 `

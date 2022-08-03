@@ -1,22 +1,21 @@
 import { useState } from "react"
 import { Dropdown } from "./dropdown"
-import { SelectButton } from "./selectButton"
+import { ArrowButton } from "../arrowButton"
 import { MainWrapperStyled } from "./styled"
 
-export const Select = ({ listItems, selectedPlatform, setSelectedPlatform, buttonTitle }) => {
+export const Filter = ({ listItems, selectedPlatform, setSelectedPlatform, buttonTitle }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
     <MainWrapperStyled>
-      <SelectButton title={buttonTitle} text={selectedPlatform?.name || "All"} setIsOpen={setIsOpen} />
-      {listItems && (
+      <ArrowButton title={buttonTitle} text={selectedPlatform?.name || "All"} setIsToggled={setIsOpen} />
         <Dropdown 
           listItems={listItems} 
+          selectedPlatformId={selectedPlatform?.id}
           isOpen={isOpen} 
           setIsOpen={setIsOpen} 
           setSelectedItem={setSelectedPlatform} 
         />
-      )}
     </MainWrapperStyled>
   )
 }
