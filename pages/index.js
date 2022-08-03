@@ -79,18 +79,26 @@ const HomePage = ({ gamesList, platformsList }) => {
     }
   }, [isFetching])
 
-  useEffect(() => {
-    const sortedGamesList = currentGamesList.sort((a, b) => {
+  const scrollHandler = (e) => {
+    const isScrolledToBottom = e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 100
+    if (isScrolledToBottom) {
+      setIsFetching(true)
+    }
+  }
+
+  const sortByRating = (currentGamesList, setCurrentGamesList, setIsUpRatingOrder) => () => {
+    const sortedGamesListByRating = currentGamesList.sort((a, b) => {
       if (isUpRatingOrder) {
         return a.rating - b.rating
       }
       return b.rating - a.rating
     })
-    setCurrentGamesList(sortedGamesList)
-  }, [isUpRatingOrder])
+    setCurrentGamesList(sortedGamesListByRating)
+    setIsUpRatingOrder((prev) => !prev)
+  }
 
-  useEffect(() => {
-    const sortedGamesList = currentGamesList.sort((a, b) => {
+  const sortByDate = (currentGamesList, setCurrentGamesList, setIsUpDateOrder) => () => {
+    const sortedGamesListByDate = currentGamesList.sort((a, b) => {
       const timeValueA = new Date(a.released).getTime()
       const timeValueB = new Date(b.released).getTime()
       
@@ -99,14 +107,8 @@ const HomePage = ({ gamesList, platformsList }) => {
       }
       return timeValueB - timeValueA
     })
-    setCurrentGamesList(sortedGamesList)
-  }, [isUpDateOrder])
-
-  const scrollHandler = (e) => {
-    const isScrolledToBottom = e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 100
-    if (isScrolledToBottom) {
-      setIsFetching(true)
-    }
+    setCurrentGamesList(sortedGamesListByDate)
+    setIsUpDateOrder((prev) => !prev)
   }
 
   return (
@@ -120,13 +122,21 @@ const HomePage = ({ gamesList, platformsList }) => {
             title="Order by:"
             text="Date"
             isToggled={isUpDateOrder}
-            setIsToggled={setIsUpDateOrder}
+            toggle={sortByDate(
+              currentGamesList, 
+              setCurrentGamesList, 
+              setIsUpDateOrder
+            )}
           />
           <ArrowButton 
             title="Order by:"
             text="Rating"
             isToggled={isUpRatingOrder}
-            setIsToggled={setIsUpRatingOrder}
+            toggle={sortByRating(
+              currentGamesList, 
+              setCurrentGamesList, 
+              setIsUpRatingOrder
+            )}
           />
           <Filter 
             listItems={platformsList} 

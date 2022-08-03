@@ -14,8 +14,6 @@ export const Slider = ({ screenshots }) => {
   const [count, setCount] = useState(0)
   const [offset, setOffset] = useState(0)
 
-  const changeOffset = () => setOffset(screenshotRef.current.width * count)
-
   useEffect(() => {
     window.addEventListener("resize", changeOffset)
     return () => window.removeEventListener("resize", changeOffset)
@@ -24,6 +22,8 @@ export const Slider = ({ screenshots }) => {
   useEffect(() => {
     changeOffset()
   }, [count])
+
+  const changeOffset = () => setOffset(screenshotRef.current.width * count)
 
   const handleNext = () => {
       if (count === screenshots.length - 1) {

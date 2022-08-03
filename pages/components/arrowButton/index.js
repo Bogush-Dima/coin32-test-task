@@ -6,8 +6,14 @@ import {
   TitleStyled 
 } from "./styled"
 
-export const ArrowButton = ({ text, title, isToggled, setIsToggled }) => {
-  const toggleButton = () => setIsToggled((prev) => !prev)
+export const ArrowButton = ({ text, title, isToggled, toggle, setIsToggled }) => {
+  const toggleButton = () => {
+    if (setIsToggled) {
+      setIsToggled((prev) => !prev)
+    } else {
+      toggle()
+    }
+  }
 
   return (
     <SelectButtonStyled onClick={toggleButton}>
