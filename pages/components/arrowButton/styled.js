@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { device } from "../../constants/devicesSizes";
 
 export const SelectButtonStyled = styled.button`
   min-width: 150px;
@@ -12,6 +13,10 @@ export const SelectButtonStyled = styled.button`
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
+
+  @media ${device.tablet} {
+    min-width: 100%
+  }
 `
 
 export const TitleStyled = styled.span`
