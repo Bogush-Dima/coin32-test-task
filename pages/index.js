@@ -11,7 +11,8 @@ import {
   API_KEY 
 } from "./constants/paths"
 import { ArrowButton } from "./components/arrowButton"
-import { HeaderButtonsWrapperStyled } from "./styled"
+import { HeaderButtonsWrapperStyled, SearchInputWrapper } from "./styled"
+import { SearchInput } from "./components/searchInput"
 
 export const getStaticProps = async() => {
   const gamesResponse = await fetch(`${ROOT_API_PATH}${GAMES_API_PATH}?${API_KEY}`)
@@ -39,6 +40,7 @@ const HomePage = ({ gamesList, platformsList }) => {
   const [selectedPlatform, setSelectedPlatform] = useState(null)
   const [isUpDateOrder, setIsUpDateOrder] = useState(false)
   const [isUpRatingOrder, setIsUpRatingOrder] = useState(false)
+  const [searchValue, setSearchValue] = useState("")
 
   useEffect(() => {
     if (selectedPlatform) {
@@ -49,6 +51,14 @@ const HomePage = ({ gamesList, platformsList }) => {
       })()
     }
   }, [selectedPlatform])
+
+  useEffect(() => {
+    (async () => {
+      const searchGamesResponse = await fetch(`${ROOT_API_PATH}${GAMES_API_PATH}?${API_KEY}&search=${searchValue.toLowerCase()}`)
+      const searchGamesData = await searchGamesResponse.json()
+      setCurrentGamesList(getRelevantGamesData(searchGamesData.results))
+    })()
+  }, [searchValue])
 
   useEffect(() => {
     const sortedGamesList = currentGamesList.sort((a, b) => {
@@ -76,6 +86,9 @@ const HomePage = ({ gamesList, platformsList }) => {
   return (
     <>
       <Header title="Games List">
+        <SearchInputWrapper>
+          <SearchInput setSearchValue={setSearchValue} />
+        </SearchInputWrapper>
         <HeaderButtonsWrapperStyled>
           <ArrowButton 
             title="Order by:"
