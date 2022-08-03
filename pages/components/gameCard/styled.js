@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { device } from "../../constants/devicesSizes";
 
 export const MainWrapperStyled = styled.div`
   background-color: #202020;
@@ -13,6 +14,10 @@ export const PosterStyled = styled.div`
   background-size: cover;
   width: 100%;
   height: 200px;
+
+  @media ${device.laptop} { 
+    height: 300px
+  }
 `
 
 export const InfoWrapper = styled.div`

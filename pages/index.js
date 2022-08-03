@@ -3,6 +3,8 @@ import { useEffect, useState } from "react"
 import { GamesList } from "./components/gamesList"
 import { Header } from "./components/header"
 import { Filter } from "./components/filter"
+import { ArrowButton } from "./components/arrowButton"
+import { SearchInput } from "./components/searchInput"
 import { getRelevantGamesData, getRelevantPlatformsData } from "./helpers/api"
 import { 
   ROOT_API_PATH, 
@@ -10,9 +12,7 @@ import {
   PLATFORMS_API_PATH, 
   API_KEY 
 } from "./constants/paths"
-import { ArrowButton } from "./components/arrowButton"
 import { HeaderButtonsWrapperStyled, SearchInputWrapper } from "./styled"
-import { SearchInput } from "./components/searchInput"
 
 export const getStaticProps = async() => {
   const gamesResponse = await fetch(`${ROOT_API_PATH}${GAMES_API_PATH}?${API_KEY}`)
